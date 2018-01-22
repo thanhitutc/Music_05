@@ -9,7 +9,9 @@ import com.framgia.music5.R;
 import com.framgia.music5.screen.album.AlbumFragment;
 import com.framgia.music5.screen.allsong.AllSongFragment;
 import com.framgia.music5.screen.favorite.FavoriteFragment;
-
+/**
+ * MainPagerAdapter
+ * */
 public class MainPagerAdapter extends FragmentPagerAdapter {
     private Context mContext;
     public static final int COUNT_TAB = 3;
