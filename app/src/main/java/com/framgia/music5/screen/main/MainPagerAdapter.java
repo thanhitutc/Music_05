@@ -1,4 +1,4 @@
-package com.framgia.music5.adapter;
+package com.framgia.music5.screen.main;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -10,15 +10,11 @@ import com.framgia.music5.screen.album.AlbumFragment;
 import com.framgia.music5.screen.allsong.AllSongFragment;
 import com.framgia.music5.screen.favorite.FavoriteFragment;
 
-import static com.framgia.music5.adapter.TabType.ALBUM_FRAGMENT;
-import static com.framgia.music5.adapter.TabType.ALL_SONG_FRAGMENT;
-import static com.framgia.music5.adapter.TabType.FAVORITE_FRAGMENT;
-
-public class TabFragmentAdapter extends FragmentPagerAdapter {
+public class MainPagerAdapter extends FragmentPagerAdapter {
     private Context mContext;
     public static final int COUNT_TAB = 3;
 
-    public TabFragmentAdapter(Context context, FragmentManager fm) {
+    public MainPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
     }
@@ -26,13 +22,13 @@ public class TabFragmentAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case ALL_SONG_FRAGMENT:
+            case MainType.ALL_SONG:
                 return new AllSongFragment();
 
-            case ALBUM_FRAGMENT:
+            case MainType.ALBUM:
                 return new AlbumFragment();
 
-            case FAVORITE_FRAGMENT:
+            case MainType.FAVORITE:
                 return new FavoriteFragment();
 
             default:
@@ -49,13 +45,13 @@ public class TabFragmentAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position) {
-            case ALL_SONG_FRAGMENT:
+            case MainType.ALL_SONG:
                 return mContext.getResources().getString(R.string.title_all_song);
 
-            case ALBUM_FRAGMENT:
+            case MainType.ALBUM:
                 return mContext.getResources().getString(R.string.title_album);
 
-            case FAVORITE_FRAGMENT:
+            case MainType.FAVORITE:
                 return mContext.getResources().getString(R.string.title_favorite);
 
             default:
