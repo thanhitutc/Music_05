@@ -31,12 +31,13 @@ public final class SongRepository implements SongDataSource {
     }
 
     @Override
+
     public List<Song> getSongByName(String name) {
         return mSongDataSource.getSongByName(name);
     }
 
     @Override
-    public boolean deleteSong(String id) {
-        return mSongDataSource.deleteSong(id);
+    public boolean deleteSong(Song song) {
+        return mSongDataSource.deleteSong(song);
     }
 }

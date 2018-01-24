@@ -1,6 +1,8 @@
 package com.framgia.music5.data.model;
 
 import android.content.ContentValues;
+import android.database.Cursor;
+import android.provider.MediaStore;
 
 import static com.framgia.music5.BaseColumsDatabase.DATA;
 import static com.framgia.music5.BaseColumsDatabase.DURATION;
@@ -21,6 +23,14 @@ public class Song {
         mSinger = singer;
         mData = data;
         mDuration = duration;
+    }
+
+    public Song(Cursor cursor) {
+        String id = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
+        String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+        long duration = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
+        String data = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+        String singer = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
     }
 
     public String getId() {

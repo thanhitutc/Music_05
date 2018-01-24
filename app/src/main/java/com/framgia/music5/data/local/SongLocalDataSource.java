@@ -39,13 +39,13 @@ public final class SongLocalDataSource extends DatabaseHelper implements SongDat
     }
 
     @Override
-    public boolean deleteSong(String id) {
-        if (id == null) {
+    public boolean deleteSong(Song song) {
+        if (song == null) {
             return false;
         }
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ID, id);
+        contentValues.put(ID, song.getId());
         long result = db.insert(TABLE_SONG_DELETED, null, contentValues);
         return result != -1;
     }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="height_item_song">64dp</dimen>
+    <dimen name="width_text_song">256dp</dimen>
+    <dimen name="width_avatar_song">64dp</dimen>
+    <dimen name="margin_layout">8dp</dimen>
+    <dimen name="text_size_title">18sp</dimen>
+    <dimen name="text_size_singer">15sp</dimen>
+
+
+</resources>
