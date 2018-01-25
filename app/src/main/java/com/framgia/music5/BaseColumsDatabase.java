@@ -17,4 +17,5 @@ public class BaseColumsDatabase {
     public static final String SINGER = "singer";
     public static final String DATA = "data";
     public static final String DURATION = "duration";
+
 }
