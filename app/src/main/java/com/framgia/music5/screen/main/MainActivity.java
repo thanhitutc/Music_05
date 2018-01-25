@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import com.framgia.music5.R;
 
+/**
+ * main
+ **/
 public class MainActivity extends AppCompatActivity {
     public static final int PAGE_LIMIT = 2;
 

@@ -1,18 +1,7 @@
 package com.framgia.music5.screen.album;
 
+import android.support.v4.app.Fragment;
 
-import com.framgia.music5.BaseFragment;
+public class AlbumFragment extends Fragment {
 
-
-public class AlbumFragment extends BaseFragment {
-
-    @Override
-    protected void initActions() {
-
-    }
-
-    @Override
-    protected void initComponents() {
-
-    }
 }
