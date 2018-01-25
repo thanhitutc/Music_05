@@ -1,4 +1,10 @@
 package com.framgia.music5.data.model;
+
+import android.database.Cursor;
+
+import static com.framgia.music5.BaseColumsDatabase.ID;
+import static com.framgia.music5.BaseColumsDatabase.TITLE;
+
 /***
  * Album
  * */
@@ -9,6 +15,11 @@ public class Album {
     public Album(int id, String name) {
         mId = id;
         mNameAlbum = name;
+    }
+
+    public Album(Cursor cursor) {
+        int id = cursor.getInt(cursor.getColumnIndex(ID));
+        String name = cursor.getString(cursor.getColumnIndex(TITLE));
     }
 
     public int getId() {
