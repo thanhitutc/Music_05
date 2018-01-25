@@ -126,7 +126,7 @@ public final class FavoriteLocalDataSource extends DatabaseHelper implements Fav
 
     private String[] getFavoriteApplication() {
         ArrayList<String> whereFav = new ArrayList<>(Arrays.asList(getDataSongFavorite()));
-        List<String> whereDelete = new ArrayList<>(Arrays.asList(getSongDeleted()));
+        ArrayList<String> whereDelete = new ArrayList<>(Arrays.asList(getSongDeleted()));
         whereFav.removeAll(whereDelete);
         return whereFav.toArray(new String[0]);
     }
