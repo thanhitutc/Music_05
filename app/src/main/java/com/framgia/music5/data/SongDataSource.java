@@ -13,5 +13,5 @@ public interface SongDataSource {
 
     List<Song> getSongByName(String name);
 
-    boolean deleteSong(String id);
+    boolean deleteSong(Song song);
 }

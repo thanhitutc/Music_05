@@ -3,4 +3,13 @@
     <string name="title_all_song">Song</string>
     <string name="title_album">Album</string>
     <string name="title_favorite">Favorite</string>
+    <string name="title_menu_add_to_favorite">Add to favorite</string>
+    <string name="title_menu_add_to_album">Add to album</string>
+    <string name="title_menu_delete_song">Delete song</string>
+    <string name="announcement_no_song">No song in the memory</string>
+    <string name="announcement_delete_song_fail">Delete song fail</string>
+    <string name="announcement_add_song_favorite_success">Add song to favorite success</string>
+    <string name="announcement_add_song_favorite_fail">Song is exist</string>
+    <string name="description_image_view">button more</string>
+    <string name="description_image_avatar">image song</string>
 </resources>

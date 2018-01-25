@@ -10,9 +10,11 @@ public class ContractSong {
 
     /**
      * Constant Database Favotite
-     */
+     **/
     public static class DatabaseFavorite extends BaseColumsDatabase {
         public static final String TABLE_FAVORITE = "Favorite";
+        public static final String IN_TABLE_FAVORITE = " IN ( ";
+        public static final String NOT_IN_TABLE_FAVORITE = " NOT IN ( ";
         public static final String SQL_DELTE_FAVORITE = DROP_TABLE + TABLE_FAVORITE;
         public static final String SQL_CREATE_TABLE_FAVORITE =
                 CREATE_TABLE + TABLE_FAVORITE + "(" + ID + " Text primary key)";
