@@ -44,4 +44,9 @@ public final class AlbumRepository implements AlbumDataSource {
     public boolean updateName(int idAlbum, String name) {
         return mAlbumDataSource.updateName(idAlbum, name);
     }
+
+    @Override
+    public int getLastIdInsert() {
+        return mAlbumDataSource.getLastIdInsert();
+    }
 }

@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 import com.framgia.music5.R;
 import com.framgia.music5.data.model.Album;
 import com.framgia.music5.data.repository.AlbumRepository;
@@ -23,7 +24,8 @@ import java.util.List;
  */
 
 public class SongAddToAlbumActivity extends Activity
-        implements ContractSongAddToAlbum.SongAddToAlbumView, View.OnClickListener {
+        implements ContractSongAddToAlbum.SongAddToAlbumView, View.OnClickListener,
+        OnClickAlbumListener {
     public static final String DEFAULT_ID_SONG_ADD = "-1";
     public static final int SPAN_COUNT = 2;
     private RecyclerView mRecyclerAlbum;
@@ -57,21 +59,26 @@ public class SongAddToAlbumActivity extends Activity
     public void showListAlbum(List<Album> albums) {
         ListAlbumAddSongAdapter mAdapter = new ListAlbumAddSongAdapter(albums);
         mRecyclerAlbum.setAdapter(mAdapter);
+        mAdapter.setListener(this);
     }
 
     @Override
     public void showNoListAlbum() {
-
+        showToast(getBaseContext().getResources().getString(R.string.announcement_no_album));
     }
 
     @Override
     public void showAddSongSuccess() {
-
+        showToast(getBaseContext().getResources()
+                .getString(R.string.announcement_add_song_album_success));
+        finish();
     }
 
     @Override
     public void showAddSongFail() {
-
+        showToast(getBaseContext().getResources()
+                .getString(R.string.announcement_add_song_album_fail));
+        finish();
     }
 
     @Override
@@ -81,6 +88,11 @@ public class SongAddToAlbumActivity extends Activity
                 createDialogAddAlbum();
                 break;
         }
+    }
+
+    @Override
+    public void onItemClickSong(Album album) {
+        mPresenter.addSongToAlbum(album.getId());
     }
 
     private void initRecyclerView() {
@@ -119,6 +131,7 @@ public class SongAddToAlbumActivity extends Activity
                         mPresenter.addNewAlbum(editTextNewAlbum.getText().toString());
                     }
                 });
+
         dialog.setPositiveButton(getBaseContext().getResources().getString(android.R.string.cancel),
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -128,5 +141,9 @@ public class SongAddToAlbumActivity extends Activity
                 });
         dialog.create();
         dialog.show();
+    }
+
+    private void showToast(String content) {
+        Toast.makeText(getBaseContext(), content, Toast.LENGTH_SHORT).show();
     }
 }
