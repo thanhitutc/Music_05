@@ -18,8 +18,8 @@ public class Album {
     }
 
     public Album(Cursor cursor) {
-        int id = cursor.getInt(cursor.getColumnIndex(ID));
-        String name = cursor.getString(cursor.getColumnIndex(TITLE));
+        mId = cursor.getInt(cursor.getColumnIndex(ID));
+        mNameAlbum = cursor.getString(cursor.getColumnIndex(TITLE));
     }
 
     public int getId() {

@@ -6,6 +6,6 @@
     <dimen name="margin_layout">8dp</dimen>
     <dimen name="text_size_title">18sp</dimen>
     <dimen name="text_size_singer">15sp</dimen>
-
-
+    <dimen name="width_image_album">140dp</dimen>
+    <dimen name="height_image_album">140dp</dimen>
 </resources>
