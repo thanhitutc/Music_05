@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_list_album);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         setTitle(getBaseContext().getResources().getString(R.string.app_name));
