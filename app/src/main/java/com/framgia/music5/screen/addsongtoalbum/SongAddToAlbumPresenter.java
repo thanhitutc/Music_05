@@ -25,7 +25,7 @@ public class SongAddToAlbumPresenter implements ContractSongAddToAlbum.SongAddTo
     @Override
     public void loadListSong() {
         List<Album> albums = mAlbumRepository.getListAlbum();
-        if (albums != null) {
+        if (albums.size() != 0) {
             mSongAddToAlbumView.showListAlbum(albums);
         } else {
             mSongAddToAlbumView.showNoListAlbum();
@@ -34,7 +34,23 @@ public class SongAddToAlbumPresenter implements ContractSongAddToAlbum.SongAddTo
 
     @Override
     public void addNewAlbum(String nameAlbum) {
-        
+        boolean isSuccessful = mAlbumRepository.insertAlbum(nameAlbum);
+        if (isSuccessful) {
+            int idAlbum = mAlbumRepository.getLastIdInsert();
+            if (idAlbum != -1) {
+                addSongToAlbum(idAlbum);
+            }
+        }
+    }
+
+    @Override
+    public void addSongToAlbum(int idAlbum) {
+        boolean isInsertSuccess = mSongInAlbumRepository.insertSongToAlbum(idAlbum, mIdSong);
+        if (isInsertSuccess) {
+            mSongAddToAlbumView.showAddSongSuccess();
+        } else {
+            mSongAddToAlbumView.showAddSongFail();
+        }
     }
 
     @Override

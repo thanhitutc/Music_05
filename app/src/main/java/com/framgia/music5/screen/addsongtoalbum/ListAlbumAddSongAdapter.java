@@ -16,6 +16,7 @@ import java.util.List;
 public class ListAlbumAddSongAdapter
         extends RecyclerView.Adapter<ListAlbumAddSongAdapter.ListAlbumHolder> {
     private List<Album> mAlbums;
+    private OnClickAlbumListener mListener;
 
     public ListAlbumAddSongAdapter(List<Album> albums) {
         mAlbums = albums;
@@ -38,6 +39,10 @@ public class ListAlbumAddSongAdapter
         return mAlbums != null ? mAlbums.size() : 0;
     }
 
+    public void setListener(OnClickAlbumListener listener) {
+        mListener = listener;
+    }
+
     /**
      * Holder List album add
      */
@@ -48,6 +53,12 @@ public class ListAlbumAddSongAdapter
         public ListAlbumHolder(View itemView) {
             super(itemView);
             mTextViewNameAlbum = itemView.findViewById(R.id.text_name_album);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onItemClickSong(mAlbums.get(getAdapterPosition()));
+                }
+            });
         }
 
         public void binData(Album album) {

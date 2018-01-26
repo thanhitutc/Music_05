@@ -16,4 +16,6 @@ public interface AlbumDataSource {
     boolean deleteAlbum(int idAlbum);
 
     boolean updateName(int idAlbum, String newName);
+
+    int getLastIdInsert();
 }

@@ -26,11 +26,11 @@ public class Song {
     }
 
     public Song(Cursor cursor) {
-        String id = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
-        String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
-        long duration = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
-        String data = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-        String singer = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+        mId = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
+        mTitle = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+        mDuration = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
+        mData = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+        mSinger = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
     }
 
     public String getId() {

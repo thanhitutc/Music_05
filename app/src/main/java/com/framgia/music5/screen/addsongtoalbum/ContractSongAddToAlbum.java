@@ -32,5 +32,7 @@ public interface ContractSongAddToAlbum {
         void loadListSong();
 
         void addNewAlbum(String nameAlbum);
+
+        void addSongToAlbum(int idAlbum);
     }
 }

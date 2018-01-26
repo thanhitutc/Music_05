@@ -38,7 +38,7 @@ public final class AlbumLocalDataSource extends DatabaseHelper implements AlbumD
 
     @Override
     public boolean insertAlbum(String name) {
-        if (name == null) {
+        if (name == null || name.equals("")) {
             return false;
         }
         SQLiteDatabase db = getWritableDatabase();
@@ -84,6 +84,25 @@ public final class AlbumLocalDataSource extends DatabaseHelper implements AlbumD
             db.close();
         }
         return result != -1;
+    }
+
+    @Override
+    public int getLastIdInsert() {
+        return getLastInsertRow();
+    }
+
+    private int getLastInsertRow() {
+        int id = -1;
+        SQLiteDatabase db = getReadableDatabase();
+        String[] project = { ID };
+        String oderBy = ID + " DESC LIMIT 1";
+        Cursor cursor = db.query(TABLE_ALBUM, project, null, null, null, null, oderBy);
+        if (cursor != null && cursor.moveToFirst()) {
+            id = cursor.getInt(cursor.getColumnIndex(ID));
+            cursor.close();
+        }
+        db.close();
+        return id;
     }
 
     private List<Album> getAlbum() {
