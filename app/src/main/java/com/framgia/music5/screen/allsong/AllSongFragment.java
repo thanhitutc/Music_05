@@ -1,5 +1,6 @@
 package com.framgia.music5.screen.allsong;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,8 @@ import com.framgia.music5.R;
 import com.framgia.music5.data.model.Song;
 import com.framgia.music5.data.repository.FavoriteRepository;
 import com.framgia.music5.data.repository.SongRepository;
+import com.framgia.music5.screen.addsongtoalbum.SongAddToAlbumActivity;
+import com.framgia.music5.ultils.Constant;
 import java.util.List;
 
 /**
@@ -89,7 +92,10 @@ public class AllSongFragment extends Fragment
 
     @Override
     public void onAddToAlbum(Song song) {
-
+        Intent intent = new Intent(getActivity(), SongAddToAlbumActivity.class);
+        intent.setAction(Constant.ConstantIntent.ACTION_ID_SONG_ADD_TO_ALBUM);
+        intent.putExtra(Constant.ConstantIntent.EXTRA_ID_SONG_ADD_TO_ALBUM, song.getId());
+        getActivity().startActivity(intent);
     }
 
     @Override
