@@ -6,6 +6,8 @@
     <string name="title_menu_add_to_favorite">Add to favorite</string>
     <string name="title_menu_add_to_album">Add to album</string>
     <string name="title_menu_delete_song">Delete song</string>
+    <string name="title_menu_delete_album">Delete album</string>
+    <string name="title_menu_update_album">Update name</string>
     <string name="title_dialog_add_album">Add new album</string>
     <string name="announcement_no_song">No song in the memory</string>
     <string name="announcement_no_song_favorite">No song favorite in the memory</string>
