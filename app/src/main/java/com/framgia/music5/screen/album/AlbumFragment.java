@@ -17,6 +17,7 @@ import com.framgia.music5.R;
 import com.framgia.music5.data.model.Album;
 import com.framgia.music5.data.repository.AlbumRepository;
 import com.framgia.music5.data.repository.SongInAlbumRepository;
+import com.framgia.music5.screen.detailalbum.DetailAlbumActivity;
 import java.util.List;
 
 /**
@@ -94,7 +95,7 @@ public class AlbumFragment extends Fragment
 
     @Override
     public void onItemClickAlbum(Album album) {
-
+        startActivity(DetailAlbumActivity.getInstance(getActivity(), album));
     }
 
     @Override

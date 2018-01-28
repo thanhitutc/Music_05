@@ -10,6 +10,7 @@
     <string name="title_menu_update_album">Update name</string>
     <string name="title_dialog_add_album">Add new album</string>
     <string name="announcement_no_song">No song in the memory</string>
+    <string name="announcement_no_song_in_album">No song in the album</string>
     <string name="announcement_no_song_favorite">No song favorite in the memory</string>
     <string name="announcement_delete_song_fail">Delete song fail</string>
     <string name="announcement_add_song_favorite_success">Add song to the favorite successfully</string>

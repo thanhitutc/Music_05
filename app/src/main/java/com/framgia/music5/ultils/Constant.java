@@ -6,9 +6,16 @@ package com.framgia.music5.ultils;
 public class Constant {
     /**
      * Constant Intent
-     * */
-    public class ConstantIntent{
-        public static final String EXTRA_ID_SONG_ADD_TO_ALBUM = "extra_id_song_to_album";
-        public static final String ACTION_ID_SONG_ADD_TO_ALBUM = "action_id_song_to_album";
+     */
+    public class ConstantIntent {
+        public static final String EXTRA_ID_SONG_ADD_TO_ALBUM =
+                "com.framgia.music5.extra_id_song_to_album";
+        public static final String ACTION_ID_SONG_ADD_TO_ALBUM =
+                "com.framgia.music5.action_id_song_to_album";
+        public static final String EXTRA_ALBUM = "com.framgia.music5.extra_album";
+        public static final String EXTRA_NAME_ALBUM_DETAIL =
+                "com.framgia.music5.extra_name_album_detail";
+        public static final String ACTION_ID_ALBUM_DETAIL =
+                "com.framgia.music5.action_id_album_detail";
     }
 }
