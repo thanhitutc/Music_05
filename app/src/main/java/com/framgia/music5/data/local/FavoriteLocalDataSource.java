@@ -144,9 +144,7 @@ public final class FavoriteLocalDataSource extends DatabaseHelper implements Fav
                     .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, whereClause, whereArg,
                             MediaStore.Audio.Media.DATE_ADDED + DESC);
         } else {
-            cursor = mContext.getContentResolver()
-                    .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null, null,
-                            MediaStore.Audio.Media.DATE_ADDED + DESC);
+            return null;
         }
         if (cursor == null) {
             return null;
