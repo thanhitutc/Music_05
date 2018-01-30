@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".screen.addsongtoalbum.SongAddToAlbumActivity"/>
+        <activity android:name=".screen.detailalbum.DetailAlbumActivity"/>
     </application>
 
 </manifest>
