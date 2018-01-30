@@ -17,5 +17,11 @@ public class Constant {
                 "com.framgia.music5.extra_name_album_detail";
         public static final String ACTION_ID_ALBUM_DETAIL =
                 "com.framgia.music5.action_id_album_detail";
+        public static final String ACTION_INIT_SONG_SERVICE =
+                "com.framgia.music5.action_init_song_service";
+        public static final String EXTRA_INIT_SONG_SERVICE =
+                "com.framgia.music5.extra_init_song_service";
+        public static final String EXTRA_INIT_POSITION_SONG_SERVICE =
+                "com.framgia.music5.extra_init_position_song_service";
     }
 }

@@ -8,4 +8,6 @@
     <dimen name="text_size_singer">15sp</dimen>
     <dimen name="width_image_album">140dp</dimen>
     <dimen name="height_image_album">140dp</dimen>
+    <dimen name="height_image_notification">56dp</dimen>
+    <dimen name="width_image_notification">56dp</dimen>
 </resources>
