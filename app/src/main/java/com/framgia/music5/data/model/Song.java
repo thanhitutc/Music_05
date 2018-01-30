@@ -2,6 +2,8 @@ package com.framgia.music5.data.model;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 
 import static com.framgia.music5.BaseColumsDatabase.DATA;
@@ -9,8 +11,10 @@ import static com.framgia.music5.BaseColumsDatabase.DURATION;
 import static com.framgia.music5.BaseColumsDatabase.ID;
 import static com.framgia.music5.BaseColumsDatabase.SINGER;
 import static com.framgia.music5.BaseColumsDatabase.TITLE;
-
-public class Song {
+/**
+ * Model song
+ */
+public class Song implements Parcelable {
     private String mId;
     private String mTitle;
     private String mSinger;
@@ -31,6 +35,28 @@ public class Song {
         mDuration = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
         mData = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
         mSinger = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+    }
+
+    public Song(Parcel in) {
+        mId = in.readString();
+        mTitle = in.readString();
+        mSinger = in.readString();
+        mData = in.readString();
+        mDuration = in.readLong();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mId);
+        parcel.writeString(mTitle);
+        parcel.writeString(mSinger);
+        parcel.writeString(mData);
+        parcel.writeLong(mDuration);
     }
 
     public String getId() {
@@ -92,4 +118,14 @@ public class Song {
         }
         return contentValues;
     }
+
+    public static final Parcelable.Creator<Song> CREATOR = new Parcelable.Creator<Song>() {
+        public Song createFromParcel(Parcel in) {
+            return new Song(in);
+        }
+
+        public Song[] newArray(int size) {
+            return new Song[size];
+        }
+    };
 }
