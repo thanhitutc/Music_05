@@ -15,7 +15,7 @@ import android.support.annotation.Nullable;
 import android.widget.RemoteViews;
 import com.framgia.music5.R;
 import com.framgia.music5.data.model.Song;
-import com.framgia.music5.screen.main.MainActivity;
+import com.framgia.music5.screen.playmusic.PlayMusicActivity;
 import com.framgia.music5.ultils.Constant;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,6 +42,7 @@ public class MediaService extends Service implements BaseMediaPlayer {
     private int mPosition;
     private RemoteViews mRemoteViews;
     private Notification mNotification;
+    private Intent mIntentBroadcast;
 
     public static Intent getInstance(Context context, List<Song> songs, int position) {
         Intent intent = new Intent(context, MediaService.class);
@@ -56,6 +57,14 @@ public class MediaService extends Service implements BaseMediaPlayer {
     public void onCreate() {
         super.onCreate();
         initMediaPlayer();
+        mIntentBroadcast = new Intent();
+        mIntentBroadcast.setAction(Constant.ConstantBroadcast.ACTION_STATE_MEDIA);
+    }
+
+    @Override
+    public void onDestroy() {
+        release();
+        super.onDestroy();
     }
 
     @Override
@@ -84,17 +93,16 @@ public class MediaService extends Service implements BaseMediaPlayer {
                 if (isPlay()) {
                     pause();
                 } else {
-                    start();
+                    resume();
                 }
-                updateNotification();
                 break;
             case ACTION_CHANGE_MEDIA_NEXT:
-
+                next();
                 break;
             case ACTION_MEDIA_CLEAR:
-                release();
-                stopForeground(true);
                 stopSelf();
+                stopForeground(true);
+                stop();
                 break;
         }
         return START_STICKY;
@@ -109,6 +117,8 @@ public class MediaService extends Service implements BaseMediaPlayer {
     @Override
     public void start() {
         mMediaPlayer.start();
+        mIntentBroadcast.putExtra(Constant.ConstantBroadcast.EXTRA_STATE_MEDIA, true);
+        sendBroadcast(mIntentBroadcast);
     }
 
     @Override
@@ -126,18 +136,34 @@ public class MediaService extends Service implements BaseMediaPlayer {
     public void pause() {
         if (mMediaPlayer.isPlaying()) {
             mMediaPlayer.pause();
+            mIntentBroadcast.putExtra(Constant.ConstantBroadcast.EXTRA_STATE_MEDIA, false);
+            sendBroadcast(mIntentBroadcast);
         }
+        updateNotification();
+    }
+
+    @Override
+    public void resume() {
+        if (isPlay()) {
+            return;
+        }
+        start();
+        updateNotification();
     }
 
     @Override
     public void stop() {
         if (mMediaPlayer != null) {
             mMediaPlayer.stop();
+            mIntentBroadcast.putExtra(Constant.ConstantBroadcast.EXTRA_STATE_MEDIA, false);
+            sendBroadcast(mIntentBroadcast);
         }
+        updateNotification();
     }
 
     @Override
     public void release() {
+        stop();
         mMediaPlayer.release();
     }
 
@@ -194,6 +220,10 @@ public class MediaService extends Service implements BaseMediaPlayer {
         }
     };
 
+    public String getTitleSongPlaying() {
+        return mSongs.get(mPosition).getTitle();
+    }
+
     private void createNotification(String title) {
         mRemoteViews = new RemoteViews(getPackageName(), R.layout.layout_notification);
         mRemoteViews.setTextViewText(R.id.text_title_song_notification, title);
@@ -230,7 +260,7 @@ public class MediaService extends Service implements BaseMediaPlayer {
                         PendingIntent.FLAG_UPDATE_CURRENT);
         mRemoteViews.setOnClickPendingIntent(R.id.image_cancel, peServiceClear);
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, PlayMusicActivity.class);
         PendingIntent pendingIntent =
                 PendingIntent.getActivities(this, (int) System.currentTimeMillis(),
                         new Intent[] { intent }, 0);

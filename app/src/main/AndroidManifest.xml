@@ -20,6 +20,7 @@
         </activity>
         <activity android:name=".screen.addsongtoalbum.SongAddToAlbumActivity"/>
         <activity android:name=".screen.detailalbum.DetailAlbumActivity"/>
+        <activity android:name=".screen.playmusic.PlayMusicActivity"/>
         <service android:name=".service.MediaService"
             android:exported="false"/>
     </application>

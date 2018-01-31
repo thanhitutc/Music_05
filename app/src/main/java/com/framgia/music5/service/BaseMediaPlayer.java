@@ -12,6 +12,8 @@ public interface BaseMediaPlayer {
 
     void pause();
 
+    void resume();
+
     void stop();
 
     void release();

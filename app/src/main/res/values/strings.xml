@@ -3,6 +3,7 @@
     <string name="title_all_song">Song</string>
     <string name="title_album">Album</string>
     <string name="title_favorite">Favorite</string>
+    <string name="title_toolbar_playmusic">Playing music</string>
     <string name="title_menu_add_to_favorite">Add to favorite</string>
     <string name="title_menu_add_to_album">Add to album</string>
     <string name="title_menu_delete_song">Delete song</string>
