@@ -16,6 +16,7 @@ import com.framgia.music5.data.model.Song;
 import com.framgia.music5.data.repository.FavoriteRepository;
 import com.framgia.music5.data.repository.SongRepository;
 import com.framgia.music5.screen.addsongtoalbum.SongAddToAlbumActivity;
+import com.framgia.music5.screen.playmusic.PlayMusicActivity;
 import com.framgia.music5.service.MediaService;
 import com.framgia.music5.ultils.Constant;
 import java.util.List;
@@ -84,6 +85,7 @@ public class AllSongFragment extends Fragment
 
     @Override
     public void onItemClickSong(List<Song> songs, int position) {
+        getActivity().startActivity(PlayMusicActivity.getInstance(getActivity()));
         getActivity().startService(MediaService.getInstance(getActivity(), songs, position));
     }
 

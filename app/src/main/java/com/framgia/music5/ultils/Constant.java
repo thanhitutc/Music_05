@@ -24,4 +24,12 @@ public class Constant {
         public static final String EXTRA_INIT_POSITION_SONG_SERVICE =
                 "com.framgia.music5.extra_init_position_song_service";
     }
+
+    /**
+     * Constant broadcast
+     */
+    public class ConstantBroadcast {
+        public static final String ACTION_STATE_MEDIA = "com.framgia.music5.action_state_media";
+        public static final String EXTRA_STATE_MEDIA = "com.framgia.music5.extra_state_media";
+    }
 }
