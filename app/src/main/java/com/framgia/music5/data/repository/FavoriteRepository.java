@@ -26,8 +26,13 @@ public final class FavoriteRepository implements FavoriteDataSource {
     }
 
     @Override
-    public List<Song> getSongFavorite(int type) {
-        return mFavoriteDataSource.getSongFavorite(type);
+    public List<Song> getSongInFavorite() {
+        return mFavoriteDataSource.getSongInFavorite();
+    }
+
+    @Override
+    public List<Song> getSongNotInFavorite() {
+        return mFavoriteDataSource.getSongNotInFavorite();
     }
 
     @Override

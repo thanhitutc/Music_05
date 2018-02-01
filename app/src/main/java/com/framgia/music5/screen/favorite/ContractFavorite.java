@@ -29,7 +29,7 @@ public interface ContractFavorite {
      */
     interface FavoritePresenter extends BasePresenter<FavoriteView> {
 
-        void loadListFavorite();
+        void loadFavoriteSongs();
 
         void deleteSongFavorite(Song song);
     }

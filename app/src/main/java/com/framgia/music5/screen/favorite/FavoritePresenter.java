@@ -1,6 +1,5 @@
 package com.framgia.music5.screen.favorite;
 
-import com.framgia.music5.data.local.FavoriteType;
 import com.framgia.music5.data.model.Song;
 import com.framgia.music5.data.repository.FavoriteRepository;
 import java.util.List;
@@ -33,8 +32,8 @@ public class FavoritePresenter implements ContractFavorite.FavoritePresenter {
     }
 
     @Override
-    public void loadListFavorite() {
-        List<Song> songs = mFavoriteRepository.getSongFavorite(FavoriteType.IN_TABLE_FAVORITE);
+    public void loadFavoriteSongs() {
+        List<Song> songs = mFavoriteRepository.getSongInFavorite();
         if (songs != null) {
             mFavoriteView.showListSong(songs);
         } else {

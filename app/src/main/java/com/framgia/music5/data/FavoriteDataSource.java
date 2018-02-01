@@ -9,7 +9,9 @@ import java.util.List;
 
 public interface FavoriteDataSource {
 
-    List<Song> getSongFavorite(int type);
+    List<Song> getSongInFavorite();
+
+    List<Song> getSongNotInFavorite();
 
     boolean deleteFavorite(String idSong);
 
@@ -25,6 +27,6 @@ public interface FavoriteDataSource {
 
         void onFail(List<String> songFail);
 
-        void onInsertNoSong();
+        void onNoSongInserted();
     }
 }

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.framgia.music5.R;
 import com.framgia.music5.data.model.Song;
 import com.framgia.music5.data.repository.FavoriteRepository;
+import com.framgia.music5.screen.listsongaddfavorite.ListAddFavoriteActivity;
 import java.util.List;
 
 /**
@@ -28,7 +29,7 @@ public class FavoriteFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_allsong, container, false);
+        return inflater.inflate(R.layout.fragment_favorite, container, false);
     }
 
     @Override
@@ -36,6 +37,12 @@ public class FavoriteFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView();
         initPresenter();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.loadFavoriteSongs();
     }
 
     @Override
@@ -80,11 +87,18 @@ public class FavoriteFragment extends Fragment
         mPresenter = new FavoritePresenter(favoriteRepository);
         mPresenter.setView(this);
         mPresenter.onStart();
-        mPresenter.loadListFavorite();
     }
 
     private void initRecyclerView() {
-        mRecyclerViewFavorite = getView().findViewById(R.id.recyler_allsong);
+        getView().findViewById(R.id.button_add_favorite)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getActivity().startActivity(
+                                ListAddFavoriteActivity.getInstance(getActivity()));
+                    }
+                });
+        mRecyclerViewFavorite = getView().findViewById(R.id.recycler_favorite);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerViewFavorite.setLayoutManager(layoutManager);
     }

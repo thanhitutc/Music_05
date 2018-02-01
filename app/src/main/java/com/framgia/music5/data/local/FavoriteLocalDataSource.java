@@ -35,15 +35,13 @@ public final class FavoriteLocalDataSource extends DatabaseHelper implements Fav
     }
 
     @Override
-    public List<Song> getSongFavorite(int type) {
-        switch (type) {
-            case FavoriteType.IN_TABLE_FAVORITE:
-                return getSongFavFromMedia(ContractSong.DatabaseFavorite.IN_TABLE_FAVORITE);
-            case FavoriteType.NOT_IN_TABLE_FAVORITE:
-                return getSongFavFromMedia(ContractSong.DatabaseFavorite.NOT_IN_TABLE_FAVORITE);
-            default:
-                return null;
-        }
+    public List<Song> getSongInFavorite() {
+        return getSongInFavorites();
+    }
+
+    @Override
+    public List<Song> getSongNotInFavorite() {
+        return getSongNotInFavorites();
     }
 
     @Override
@@ -83,7 +81,7 @@ public final class FavoriteLocalDataSource extends DatabaseHelper implements Fav
     @Override
     public void insertListSongToFavorite(List<Song> songs, CallBackInsertFavorite callBack) {
         if (songs == null) {
-            callBack.onInsertNoSong();
+            callBack.onNoSongInserted();
             return;
         }
         SQLiteDatabase db = getWritableDatabase();
@@ -95,6 +93,7 @@ public final class FavoriteLocalDataSource extends DatabaseHelper implements Fav
                         db.insertWithOnConflict(ContractSong.DatabaseFavorite.TABLE_FAVORITE, null,
                                 values, SQLiteDatabase.CONFLICT_REPLACE);
             }
+            callBack.onComplete();
         } finally {
             db.close();
         }
@@ -131,11 +130,40 @@ public final class FavoriteLocalDataSource extends DatabaseHelper implements Fav
         return whereFav.toArray(new String[0]);
     }
 
-    private List<Song> getSongFavFromMedia(String where) {
+    private List<Song> getSongNotInFavorites() {
+        String[] whereArg = getFavoriteApplication();
+        Cursor cursor;
+        if (whereArg.length == 0) {
+            return getSongsFromMediaStore();
+        } else {
+            String whereClause = MediaStore.Audio.Media._ID + " NOT IN ( ";
+            for (String arg : whereArg) {
+                whereClause += "?,";
+            }
+            whereClause = whereClause.substring(0, whereClause.length() - 1) + ")";
+            cursor = mContext.getContentResolver()
+                    .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, whereClause, whereArg,
+                            MediaStore.Audio.Media.DATE_ADDED + DESC);
+        }
+        if (cursor == null) {
+            return null;
+        }
+        List<Song> songs = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                songs.add(new Song(cursor));
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+        return songs;
+    }
+
+    private List<Song> getSongInFavorites() {
         String[] whereArg = getFavoriteApplication();
         Cursor cursor;
         if (whereArg.length != 0) {
-            String whereClause = MediaStore.Audio.Media._ID + where;
+            String whereClause = MediaStore.Audio.Media._ID + " IN ( ";
             for (String arg : whereArg) {
                 whereClause += "?,";
             }
