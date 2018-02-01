@@ -15,11 +15,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.framgia.music5.R;
 import com.framgia.music5.service.MediaService;
+import com.framgia.music5.service.RepeatType;
 import com.framgia.music5.ultils.Constant;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -33,10 +36,12 @@ import static com.framgia.music5.ultils.Constant.ConstantBroadcast.ACTION_STATE_
 public class PlayMusicActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int DEFAULT_DELAY = 1000;
     private static final String TIME_FORMAT = "mm:ss";
+    private static final String TIME_DEFAULT = "00:00";
     private TextView mTextCurrentDuration;
     private TextView mTextDuration;
     private TextView mTextTitleSong;
     private SeekBar mSeekBar;
+    private ImageView mImagePlaying;
     private ImageView mButtonShuffle;
     private ImageView mButtonPrevious;
     private ImageView mButtonState;
@@ -46,6 +51,7 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
     private Handler mHandler;
     private IntentFilter mIntentFilter;
     private BroadcastReceiver mBroadcastReceiver;
+    private Animation mAnimation;
 
     public static Intent getInstance(Context context) {
         Intent intent = new Intent(context, PlayMusicActivity.class);
@@ -58,6 +64,8 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
             MediaService.MediaBinder mediaBinder = (MediaService.MediaBinder) iBinder;
             mService = mediaBinder.getMediaService();
             update();
+            initSettingService();
+            initStatePlaying();
         }
 
         @Override
@@ -100,10 +108,10 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_shuffle:
-
+                onShuffleMusicClick();
                 break;
             case R.id.image_previous:
-
+                mService.previous();
                 break;
             case R.id.image_state:
                 if (mService.isPlay()) {
@@ -116,7 +124,7 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
                 mService.next();
                 break;
             case R.id.image_repeat:
-
+                repeatMode();
                 break;
         }
     }
@@ -141,6 +149,7 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
         mTextDuration = findViewById(R.id.text_duration);
         mTextTitleSong = findViewById(R.id.text_title_playing);
         mSeekBar = findViewById(R.id.seek_bar);
+        mImagePlaying = findViewById(R.id.image_playing);
         mButtonShuffle = findViewById(R.id.image_shuffle);
         mButtonPrevious = findViewById(R.id.image_previous);
         mButtonState = findViewById(R.id.image_state);
@@ -177,12 +186,71 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
         mHandler.postDelayed(mTimeCounter, DEFAULT_DELAY);
     }
 
+    private void repeatMode() {
+        int repeatMode = mService.getRepeat();
+        switch (repeatMode) {
+            case RepeatType.NO_REPEAT:
+                mService.setRepeat(RepeatType.REPEAT_ONE);
+                mButtonRepeat.setImageResource(R.drawable.ic_repeat_one_on);
+                break;
+            case RepeatType.REPEAT_ONE:
+                mService.setRepeat(RepeatType.REPEAT_ALL);
+                mButtonRepeat.setImageResource(R.drawable.ic_repeat_on);
+                break;
+            case RepeatType.REPEAT_ALL:
+                mService.setRepeat(RepeatType.NO_REPEAT);
+                mButtonRepeat.setImageResource(R.drawable.ic_repeat_off);
+                break;
+        }
+    }
+
+    private void onShuffleMusicClick() {
+        if (mService.isShuff()) {
+            mButtonShuffle.setImageResource(R.drawable.ic_shuffle_off);
+            mService.setShuff(false);
+        } else {
+            mButtonShuffle.setImageResource(R.drawable.ic_shuffle_on);
+            mService.setShuff(true);
+        }
+    }
+
+    private void initStatePlaying() {
+        if (mService.isPlay()) {
+            mButtonState.setImageResource(R.drawable.ic_pause);
+            startAnimationImagePlaying();
+        } else {
+            mButtonState.setImageResource(R.drawable.ic_play);
+            clearAnimationImagePlaying();
+        }
+    }
+
+    private void initSettingService() {
+        if (mService.isShuff()) {
+            mButtonShuffle.setImageResource(R.drawable.ic_shuffle_on);
+        } else {
+            mButtonShuffle.setImageResource(R.drawable.ic_shuffle_off);
+        }
+        int repeatMode = mService.getRepeat();
+        switch (repeatMode) {
+            case RepeatType.NO_REPEAT:
+                mButtonRepeat.setImageResource(R.drawable.ic_repeat_off);
+                break;
+            case RepeatType.REPEAT_ONE:
+                mButtonRepeat.setImageResource(R.drawable.ic_repeat_one_on);
+                break;
+            case RepeatType.REPEAT_ALL:
+                mButtonRepeat.setImageResource(R.drawable.ic_repeat_on);
+                break;
+        }
+    }
+
     private Runnable mTimeCounter = new Runnable() {
         @Override
         public void run() {
             if (!mTextTitleSong.getText().toString().equals(mService.getTitleSongPlaying())) {
                 mTextTitleSong.setText(mService.getTitleSongPlaying());
                 mTextDuration.setText(convertToTime(mService.getDuration()));
+                mTextCurrentDuration.setText(TIME_DEFAULT);
             }
             if (mService.isPlay()) {
                 long currentPercent = 100 * mService.getCurrentDuration() / mService.getDuration();
@@ -206,12 +274,23 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
                     if (intent.getBooleanExtra(Constant.ConstantBroadcast.EXTRA_STATE_MEDIA,
                             false)) {
                         mButtonState.setImageResource(R.drawable.ic_pause);
+                        startAnimationImagePlaying();
                     } else {
                         mButtonState.setImageResource(R.drawable.ic_play);
+                        clearAnimationImagePlaying();
                     }
                 }
             }
         };
+    }
+
+    private void startAnimationImagePlaying() {
+        mAnimation = AnimationUtils.loadAnimation(this, R.anim.anim_image_playing);
+        mImagePlaying.startAnimation(mAnimation);
+    }
+
+    private void clearAnimationImagePlaying() {
+        mImagePlaying.clearAnimation();
     }
 
     private SeekBar.OnSeekBarChangeListener mOnSeekChange = new SeekBar.OnSeekBarChangeListener() {

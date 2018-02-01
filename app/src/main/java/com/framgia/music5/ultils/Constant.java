@@ -32,4 +32,13 @@ public class Constant {
         public static final String ACTION_STATE_MEDIA = "com.framgia.music5.action_state_media";
         public static final String EXTRA_STATE_MEDIA = "com.framgia.music5.extra_state_media";
     }
+
+    /**
+     * Constant Shared Preference
+     */
+
+    public class ConstantSharePrefs {
+        public static final String PREF_SHUFFLE_MEDIA = "com.framgia.music5.pref_shuffle_media";
+        public static final String PREF_REPEAT_MEDIA = "com.framgia.music5.pref_repeat_media";
+    }
 }

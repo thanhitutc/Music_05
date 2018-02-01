@@ -26,7 +26,7 @@
         android:gravity="start"
         android:paddingLeft="@dimen/margin_layout"
         android:textAlignment="center"
-        android:textColor="@color/color_grey_100"
+        android:textColor="@color/color_grey_900"
         android:textSize="@dimen/text_size_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="parent"

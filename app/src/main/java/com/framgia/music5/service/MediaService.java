@@ -14,7 +14,10 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.widget.RemoteViews;
 import com.framgia.music5.R;
+import com.framgia.music5.data.local.SettingLocalDataSource;
+import com.framgia.music5.data.model.Setting;
 import com.framgia.music5.data.model.Song;
+import com.framgia.music5.data.repository.SettingRepository;
 import com.framgia.music5.screen.playmusic.PlayMusicActivity;
 import com.framgia.music5.ultils.Constant;
 import java.io.IOException;
@@ -36,6 +39,7 @@ public class MediaService extends Service implements BaseMediaPlayer {
     private static final String ACTION_CHANGE_MEDIA_PREVIOUS = "ACTION_CHANGE_MEDIA_PREVIOUS";
     private static final String ACTION_CHANGE_MEDIA_STATE = "ACTION_CHANGE_MEDIA_STATE";
     private static final String ACTION_MEDIA_CLEAR = "ACTION_MEDIA_CLEAR";
+    private static final int DEFAULT_POSITION_START = 0;
     private static final int ID_NOTIFICATION = 183;
     private List<Song> mSongs;
     private MediaPlayer mMediaPlayer;
@@ -43,6 +47,8 @@ public class MediaService extends Service implements BaseMediaPlayer {
     private RemoteViews mRemoteViews;
     private Notification mNotification;
     private Intent mIntentBroadcast;
+    private Setting mSetting;
+    private SettingRepository mSettingRepository;
 
     public static Intent getInstance(Context context, List<Song> songs, int position) {
         Intent intent = new Intent(context, MediaService.class);
@@ -57,8 +63,15 @@ public class MediaService extends Service implements BaseMediaPlayer {
     public void onCreate() {
         super.onCreate();
         initMediaPlayer();
+        initSettingService();
         mIntentBroadcast = new Intent();
         mIntentBroadcast.setAction(Constant.ConstantBroadcast.ACTION_STATE_MEDIA);
+    }
+
+    private void initSettingService() {
+        mSettingRepository =
+                SettingRepository.getInstance(SettingLocalDataSource.getInstance(this));
+        mSetting = mSettingRepository.getSetting();
     }
 
     @Override
@@ -174,12 +187,22 @@ public class MediaService extends Service implements BaseMediaPlayer {
 
     @Override
     public void next() {
-
+        if (mPosition < mSongs.size() - 1) {
+            mPosition++;
+        } else {
+            mPosition = DEFAULT_POSITION_START;
+        }
+        play(mPosition);
     }
 
     @Override
     public void previous() {
-
+        if (mPosition > DEFAULT_POSITION_START) {
+            mPosition--;
+        } else {
+            mPosition = DEFAULT_POSITION_START;
+        }
+        play(mPosition);
     }
 
     @Override
@@ -197,12 +220,56 @@ public class MediaService extends Service implements BaseMediaPlayer {
         return mMediaPlayer.isPlaying();
     }
 
+    public boolean isShuff() {
+        return mSetting.isShuffleMode();
+    }
+
+    public void setShuff(boolean shuff) {
+        mSetting.setShuffleMode(shuff);
+        mSettingRepository.saveSetting(mSetting);
+    }
+
+    public int getRepeat() {
+        return mSetting.getRepeatMode();
+    }
+
+    public void setRepeat(int repeat) {
+        mSetting.setRepeatMode(repeat);
+        mSettingRepository.saveSetting(mSetting);
+    }
+
     private void initMediaPlayer() {
         mPosition = -1;
         mMediaPlayer = new MediaPlayer();
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mMediaPlayer.setOnPreparedListener(mOnPrepare);
         mMediaPlayer.setOnCompletionListener(mOnComple);
+    }
+
+    private void checkRepeatMode() {
+        switch (mSetting.getRepeatMode()) {
+            case RepeatType.NO_REPEAT:
+                if (mPosition < mSongs.size() - 1) {
+                    mPosition++;
+                    play(mPosition);
+                } else {
+                    mPosition = DEFAULT_POSITION_START;
+                    seekTo(DEFAULT_POSITION_START);
+                    stop();
+                }
+                break;
+            case RepeatType.REPEAT_ONE:
+                play(mPosition);
+                break;
+            case RepeatType.REPEAT_ALL:
+                if (mPosition == mSongs.size() - 1) {
+                    mPosition = DEFAULT_POSITION_START;
+                } else {
+                    mPosition++;
+                }
+                play(mPosition);
+                break;
+        }
     }
 
     private MediaPlayer.OnPreparedListener mOnPrepare = new MediaPlayer.OnPreparedListener() {
@@ -216,7 +283,7 @@ public class MediaService extends Service implements BaseMediaPlayer {
     private MediaPlayer.OnCompletionListener mOnComple = new MediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
-
+            checkRepeatMode();
         }
     };
 
