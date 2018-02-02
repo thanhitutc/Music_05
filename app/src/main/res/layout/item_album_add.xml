@@ -23,7 +23,7 @@
         android:id="@+id/text_name_album"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/color_grey_100"
+        android:textColor="@color/color_grey_900"
         android:textSize="@dimen/text_size_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

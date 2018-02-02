@@ -30,7 +30,6 @@ public final class FavoriteRepository implements FavoriteDataSource {
         return mFavoriteDataSource.getSongFavorite(type);
     }
 
-
     @Override
     public boolean deleteFavorite(String idSong) {
         return mFavoriteDataSource.deleteFavorite(idSong);
